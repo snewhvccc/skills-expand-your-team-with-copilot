@@ -49,6 +49,11 @@ def get_activities(
             query["difficulty"] = {"$exists": False}
         elif normalized_difficulty in ("beginner", "intermediate", "advanced"):
             query["difficulty"] = normalized_difficulty.capitalize()
+        else:
+            raise HTTPException(
+                status_code=400,
+                detail="Invalid difficulty value. Must be one of: 'Beginner', 'Intermediate', 'Advanced', 'All'"
+            )
     
     # Query the database
     activities = {}
