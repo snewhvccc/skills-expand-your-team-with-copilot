@@ -479,6 +479,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function renderActivityCard(name, details) {
     const activityCard = document.createElement("div");
     activityCard.className = "activity-card";
+    activityCard.dataset.activityName = name;
 
     // Calculate spots and capacity
     const totalSpots = details.max_participants;
@@ -643,7 +644,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Build a shareable link for an activity that can be opened directly
   function buildActivityShareUrl(name) {
-    const url = new URL(window.location.href);
+    const url = new URL(
+      window.location.pathname,
+      window.location.origin
+    );
     url.searchParams.set("activity", name);
     return url.toString();
   }
@@ -713,7 +717,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const cards = Array.from(activitiesList.querySelectorAll(".activity-card"));
     const matchingCard = cards.find(
-      (card) => card.querySelector("h4")?.textContent === activityName
+      (card) => card.dataset.activityName === activityName
     );
 
     if (matchingCard) {
