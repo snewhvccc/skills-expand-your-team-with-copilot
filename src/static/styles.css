@@ -331,6 +331,69 @@ button {
   opacity: 1;
 }
 
+/* Social sharing */
+.share-container {
+  position: relative;
+  margin-top: 8px;
+  display: flex;
+  justify-content: center;
+}
+
+.share-button {
+  background: var(--surface);
+  color: var(--primary);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 5px 14px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  width: 100%;
+}
+
+.share-button:hover {
+  background-color: var(--border-light);
+}
+
+.share-menu {
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  z-index: 5;
+  overflow: hidden;
+  min-width: 160px;
+}
+
+.share-menu.hidden {
+  display: none;
+}
+
+.share-option {
+  background: none;
+  color: var(--text-primary);
+  border: none;
+  border-radius: 0;
+  text-align: left;
+  padding: 8px 12px;
+  width: 100%;
+  font-size: 0.8rem;
+}
+
+.share-option:hover {
+  background-color: var(--border-light);
+}
+
+.shared-highlight {
+  border-color: var(--secondary);
+  box-shadow: 0 0 0 3px rgba(255, 111, 0, 0.4);
+}
+
 /* Special positioning for delete participant tooltip */
 .delete-participant {
   cursor: pointer;
