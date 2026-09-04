@@ -14,6 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const categoryFilters = document.querySelectorAll(".category-filter");
   const dayFilters = document.querySelectorAll(".day-filter");
   const timeFilters = document.querySelectorAll(".time-filter");
+  const difficultyFilters = document.querySelectorAll(".difficulty-filter");
 
   // Authentication elements
   const loginButton = document.getElementById("login-button");
@@ -40,6 +41,9 @@ document.addEventListener("DOMContentLoaded", () => {
   let searchQuery = "";
   let currentDay = "";
   let currentTimeRange = "";
+  // Difficulty filter: "" (the "All" button) means only show activities with
+  // no specified difficulty (i.e. activities suitable for all levels)
+  let currentDifficulty = "";
 
   // Authentication state
   let currentUser = null;
@@ -63,6 +67,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const activeTimeFilter = document.querySelector(".time-filter.active");
     if (activeTimeFilter) {
       currentTimeRange = activeTimeFilter.dataset.time;
+    }
+
+    // Initialize difficulty filter
+    const activeDifficultyFilter = document.querySelector(
+      ".difficulty-filter.active"
+    );
+    if (activeDifficultyFilter) {
+      currentDifficulty = activeDifficultyFilter.dataset.difficulty;
     }
   }
 
@@ -96,6 +108,22 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     fetchActivities();
+  }
+
+  // Function to set difficulty filter
+  function setDifficultyFilter(difficulty) {
+    currentDifficulty = difficulty;
+
+    // Update active class
+    difficultyFilters.forEach((btn) => {
+      if (btn.dataset.difficulty === difficulty) {
+        btn.classList.add("active");
+      } else {
+        btn.classList.remove("active");
+      }
+    });
+
+    displayFilteredActivities();
   }
 
   // Check if user is already logged in (from localStorage)
@@ -425,6 +453,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Apply category filter
       if (currentFilter !== "all" && activityType !== currentFilter) {
+        return;
+      }
+
+      // Apply difficulty filter
+      // "" (the "All" button) only shows activities with no specified
+      // difficulty (i.e. activities suitable for all levels)
+      const activityDifficulty = (details.difficulty || "").toLowerCase();
+      if (currentDifficulty === "") {
+        if (activityDifficulty !== "") {
+          return;
+        }
+      } else if (activityDifficulty !== currentDifficulty) {
         return;
       }
 
@@ -785,6 +825,13 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  // Add event listeners for difficulty filter buttons
+  difficultyFilters.forEach((button) => {
+    button.addEventListener("click", () => {
+      setDifficultyFilter(button.dataset.difficulty);
+    });
+  });
+
   // Open registration modal
   function openRegistrationModal(activityName) {
     modalActivityName.textContent = activityName;
@@ -1003,6 +1050,7 @@ document.addEventListener("DOMContentLoaded", () => {
   window.activityFilters = {
     setDayFilter,
     setTimeRangeFilter,
+    setDifficultyFilter,
   };
 
   // Initialize app
